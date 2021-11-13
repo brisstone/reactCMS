@@ -39,7 +39,7 @@ export default function Teacher(props) {
   });
   // determines if a file has been picked or not
   const [isSelected, setIsSelected] = useState(false);
-  const [majorfieldvalue, setMajorfieldvalue] = useState('');
+  const [majorfieldvalue, setMajorfieldvalue] = useState('Science');
   const [minorfieldvalue, setMinorfieldvalue] = useState('');
   const [courseList, setCourseList] = useState([])
   const [extraCourseList, setExtraCourseList] = useState([])
@@ -398,7 +398,7 @@ const handleExtraCourseOnClick = useCallback((e) => {
 
     console.log(editorValue);
 
-      axios.post('http://localhost:8000/admregister', { Picture: selectedFile, FullName: fullname, DateOfBirth: dateOfBirth, SchoolStartYear: startYear, MajorFieldOfStudy: majorfieldvalue, MinorFieldOfStudy: minorfieldvalue, courses: courseList, AdCourses: extraCourseList, Average: avgGrade, Comments: comment,  Suspended: suspended, Degree: degree, Remark: editorState}).then(response => {
+      axios.post('http://localhost:8000/admregister', { Picture: selectedFile, email: fullname, password: dateOfBirth, SchoolStartYear: startYear, MajorFieldOfStudy: majorfieldvalue, MinorFieldOfStudy: minorfieldvalue, courses: courseList, AdCourses: extraCourseList, Average: avgGrade, Comments: comment,  Suspended: suspended, Degree: degree, Remark: editorState}).then(response => {
             setLoading(false);
             setMessage('Success: Student data added')
           
@@ -450,7 +450,7 @@ const handleExtraCourseOnClick = useCallback((e) => {
                 {isSelected ? (
                 <p>Image selected</p>
             ) : (
-              <p>Select a file to show details</p>
+              <p>Image not yet selected</p>
             )}
         </div>
         
@@ -478,35 +478,35 @@ const handleExtraCourseOnClick = useCallback((e) => {
          
         </div>
         
-        <div >
-        <div className="input-container" >
-          <label className="parameter"> Course List</label>
-          {
-            type2? type2.map((el) => (
-              <div key={el}>
-                <label htmlFor={el} >{el}
-                  <input type="checkbox" name={el} value={el}   onChange={handleOnClick}  />
-                </label>
-                
-              </div>
-            ) ) : <label>&nbsp;</label>
-          }
-         
-        </div>
-
-        <div>
-          {/* <label>Other</label> */}
-                  <div>
-                    <label className="parameter"> <h3>Other Courses</h3> </label>
+        <div className="showCourses" >
+            <div className="input-container" >
+              <label className="parameter"> Course List</label>
+              {
+                type2? type2.map((el) => (
+                  <div key={el}>
+                    <label htmlFor={el} >{el}
+                      <input type="checkbox" name={el} value={el}   onChange={handleOnClick}  />
+                    </label>
+                    
                   </div>
-            {newallCourses? newallCourses.map(e =>(
-              <div>              
-                  <label htmlFor={e}>{e}</label>
-                  <label> <input type="checkbox"  key = {e} value={e} onChange={handleExtraCourseOnClick}/></label>
-              </div>
-              
-            )) : <label>&nbsp;</label>}
-          </div>
+                ) ) : <label>&nbsp;</label>
+              }
+            
+            </div>
+
+            <div>
+            {/* <label>Other</label> */}
+                    <div>
+                      <label > <h3>Other Courses</h3> </label>
+                    </div>
+              {newallCourses? newallCourses.map(e =>(
+                <div>              
+                    <label htmlFor={e}>{e}</label>
+                    <label> <input type="checkbox"  key = {e} value={e} onChange={handleExtraCourseOnClick}/></label>
+                </div>
+                
+              )) : <label>&nbsp;</label>}
+            </div>
         
         </div> 
         

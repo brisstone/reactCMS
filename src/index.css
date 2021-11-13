@@ -47,9 +47,9 @@ code {
   font-weight: 600;
 }
 
-.course-list{
-  display: flex;
-  flex-direction: column;
+.showCourses{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .editorcomponent{
