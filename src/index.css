@@ -53,7 +53,8 @@ code {
 }
 
 .editorcomponent{
-  height: 10rem;
+  height: 20rem;
+  width: 25rem;
 }
 
 .input-container{
@@ -61,7 +62,7 @@ code {
 }
 
 .areaText{
-  width: 20rem;
+  width: 25rem;
   height: 4rem;
 }
 
