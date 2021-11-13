@@ -355,7 +355,7 @@ const handleExtraCourseOnClick = useCallback((e) => {
 
     console.log(editorValue);
 
-      axios.post('https://pythocmsapi.herokuapp.com/admregister', {Adm: "0", email: email,  Picture: selectedFile, FullName: fullname, DateOfBirth: dateOfBirth, SchoolStartYear: startYear, MajorFieldOfStudy: majorfieldvalue, MinorFieldOfStudy: minorfieldvalue, Courses: courseList, AdCourses: extraCourseList, Average: avgGrade, Comments: comment,  Suspended: suspended, Degree: degree, Remark: editorState}).then(response => {
+      axios.post('https://pythocmsapi.herokuapp.com/admregister', {Adm: "", email: email,  Picture: selectedFile, FullName: fullname, DateOfBirth: dateOfBirth, SchoolStartYear: startYear, MajorFieldOfStudy: majorfieldvalue, MinorFieldOfStudy: minorfieldvalue, Courses: courseList, AdCourses: extraCourseList, Average: avgGrade, Comments: comment,  Suspended: suspended, Degree: degree, Remark: editorState}).then(response => {
             setLoading(false);
             console.log(response)
             console.log(response.data)
