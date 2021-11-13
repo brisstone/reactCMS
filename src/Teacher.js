@@ -561,9 +561,9 @@ const handleExtraCourseOnClick = useCallback((e) => {
 
         </div>
         
-          <div className="input-container ">
-            <label className="parameter">Teacher's Remark</label>
-            <Editor className="editorcomponent"
+          <div >
+            <label >Teacher's Remark</label>
+            <Editor 
             // editorState={editorState}
             onChange={onEditorStateChange}
            
