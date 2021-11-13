@@ -13,11 +13,11 @@ import { Editor } from "react-draft-wysiwyg";
 import 'draft-js/dist/Draft.css';
 import '../node_modules/draft-js/dist/Draft.css'
 import '../src/components/richeditor.css'
-import RichTextEditor from './components/RichTextEditor';
+// import RichTextEditor from './components/RichTextEditor';
 import './index.css'
-import e from 'cors';
+// import e from 'cors';
 // import EditorJS from '@editorjs/editorjs';
-import EditorConvertToText from './components/EditorConvertToText';
+// import EditorConvertToText from './components/EditorConvertToText';
 // const editor = new EditorJS();
 import htmlToDraft from 'html-to-draftjs';
 
