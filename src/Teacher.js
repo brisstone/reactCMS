@@ -62,60 +62,13 @@ export default function Teacher(props) {
 
   var remove = false;
   const html = '<p id="para">asdfsd</p>';
-  const contentBlock = htmlToDraft(html);
-  // if (contentBlock) {
-  //   const contentState = ContentState.createFromBlockArray(
-  //     contentBlock.contentBlocks
-  //   );
-  //   const editorState = EditorState.createWithContent(contentState);
-  //   setEditorState ({
-  //     editorState,
-  //     background: "",
-  //     isOpen: false,
-  //     emailBody: `<p id="para">test</p>`,
-  //     fontcolor: ""
-  //   })
-  // }
   
   
-  
-  
-  // const majorfield = ["Science", "Art", "Commercial"]
 
   const Science = ["Biology", "Physics", "Chemistry"]
   const Commercial = ["Account", "Business", "Credit"]
   const Art = ["Law", "Poet", "Singer"]
 
-  // const Biology = [
-  //                 { id: 1, subcourse: Anatomy}
-  //                 { id: 1, subcourse: Anatomy}
-  //                 { id: 1, subcourse: Anatomy}
-  //   "Anatomy", "Health", "Body"]
-  // const Physics = ["Physics1", "Physics2", "Physics3"]
-  // const Chemistry = ["Chemistry1", "Chemistry2", "Chemistry3"]
-  // const Account = ["Account1", "Account3", "Account3"]
-  // const Business = ["Business1", "Business2", "Business3"]
-  // const Credit = ["Credit1", "Credit2", "Credit3"]
-  // const Law = ["Law1", "Law2", "Law3"]
-  // const Poet = ["Poet1", "Poet2", "Poet3"]
-  // const Singer = ["Singer1", "Singer2", "Singer3"]
-
-
-    // const Health = [
-    //   { id: 1, subcourse: "Anatomy"},
-    //   { id: 2, subcourse: "Health1"},
-    //   { id: 3, subcourse: "Body"},
-    // ]
-    // const Physics = [
-    //   { id: 1, subcourse: "Physics1"},
-    //   { id: 2, subcourse: "Physics2"},
-    //   { id: 3, subcourse: "Physics3"},
-    // ]
-    // const Biology = [
-    //   { id: 1, subcourse: "Biology1"},
-    //   { id: 2, subcourse: "Biology2"},
-    //   { id: 3, subcourse: "Biology3"},
-    // ]
 
 const Biology = ["Biology1", "Biology2", "Biology3"]
 const Physics = ["Physics1", "Physics2", "Physics3"]
@@ -514,7 +467,7 @@ const handleExtraCourseOnClick = useCallback((e) => {
             <div>
             {/* <label>Other</label> */}
                     <div>
-                      <label > <h3>Other Courses</h3> </label>
+                      <label > Other Courses</label>
                     </div>
               {newallCourses? newallCourses.map(e =>(
                 <div>              
