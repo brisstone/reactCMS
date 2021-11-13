@@ -8,6 +8,7 @@ import {
   Entity, convertToRaw, CompositeDecorator
 } from 'draft-js'
 import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 // import {EditorState} from 'draft-js';
 import 'draft-js/dist/Draft.css';
@@ -407,7 +408,7 @@ const handleExtraCourseOnClick = useCallback((e) => {
             console.log(response.data)
             var reply = response.data;
             if(response.status===200){
-              setMessage('Student data added', reply)
+              setMessage(response.data)
             }else{
               setMessage("ERROR IN STORING")
             }
@@ -416,7 +417,7 @@ const handleExtraCourseOnClick = useCallback((e) => {
         }).catch(error => {
           setLoading(false);
           console.log(error);
-          if (error.status === 401) setError(error.response.data.message);
+          if (error.status === 401) setMessage(error.response.data.message);
           else setMessage("Something went wrong. Please try again later.");
           
         });
