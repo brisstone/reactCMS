@@ -44,4 +44,37 @@ code {
 
 .parameter{
   margin-right: 3rem;
+  font-weight: 600;
+}
+
+.course-list{
+  display: flex;
+  flex-direction: column;
+}
+
+.editorcomponent{
+  height: 10rem;
+}
+
+.input-container{
+  margin-bottom: 0.5rem;
+}
+
+.areaText{
+  width: 20rem;
+  height: 4rem;
+}
+
+input[type=textarea]{
+  width: 10rem;
+  height: 4rem;
+}
+
+
+.form{
+  margin-top: 1rem;
+}
+
+.degreechk{
+  margin-right: 0.5rem;
 }
