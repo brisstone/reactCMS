@@ -32,6 +32,7 @@ export default function Teacher(props) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
+  const [email, setEmail] = useState('');
   const [fullname, setFullname] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState(null);
   const [selectedFile, setSelectedFile] = useState({
@@ -248,14 +249,16 @@ const allCourses = ["Biology1", "Biology2", "Biology3", "Physics1", "Physics2", 
 
   const handleFullnameOnChange = (e)=>{
     var value = e.target.value
-    setFullname(value)
-    // setDateOfBirth(value)
-    // setStartYear(value)
-    // setMinorfieldvalue(value)
-    // setAvgGrade(value)
-    // setCourseList(courseList => [...courseList,value] );
-    
+    setFullname(value) 
   }
+
+  
+  const handleEmailOnChange = (e)=>{
+    var value = e.target.value
+    setEmail(value) 
+  }
+
+
 
   const handleDateofbirthOnChange = (e)=>{
     var value = e.target.value
@@ -398,15 +401,23 @@ const handleExtraCourseOnClick = useCallback((e) => {
 
     console.log(editorValue);
 
-      axios.post('http://localhost:8000/admregister', { Picture: selectedFile, email: fullname, password: dateOfBirth, SchoolStartYear: startYear, MajorFieldOfStudy: majorfieldvalue, MinorFieldOfStudy: minorfieldvalue, courses: courseList, AdCourses: extraCourseList, Average: avgGrade, Comments: comment,  Suspended: suspended, Degree: degree, Remark: editorState}).then(response => {
+      axios.post('https://pythocmsapi.herokuapp.com/admregister', {Adm: "0", email: email,  Picture: selectedFile, FullName: fullname, DateOfBirth: dateOfBirth, SchoolStartYear: startYear, MajorFieldOfStudy: majorfieldvalue, MinorFieldOfStudy: minorfieldvalue, Courses: courseList, AdCourses: extraCourseList, Average: avgGrade, Comments: comment,  Suspended: suspended, Degree: degree, Remark: editorState}).then(response => {
             setLoading(false);
-            setMessage('Success: Student data added')
+            console.log(response)
+            console.log(response.data)
+            var reply = response.data;
+            if(response.status===200){
+              setMessage('Student data added', reply)
+            }else{
+              setMessage("ERROR IN STORING")
+            }
+            
           
         }).catch(error => {
           setLoading(false);
           console.log(error);
           if (error.status === 401) setError(error.response.data.message);
-          else setError("Something went wrong. Please try again later.");
+          else setMessage("Something went wrong. Please try again later.");
           
         });
 
@@ -432,6 +443,11 @@ const handleExtraCourseOnClick = useCallback((e) => {
           </div>
         <div>
           Register Students
+        </div>
+
+        <div className="input-container">
+          <label className="parameter"> Email</label>
+        <input type="email" placeholder="email" onChange={handleEmailOnChange} required  />
         </div>
 
         <div className="input-container">
@@ -472,7 +488,7 @@ const handleExtraCourseOnClick = useCallback((e) => {
         <div className="input-container">
         <label className="parameter">Minor Field of Study</label>
           <select onChange={handleMinorfieldOnChange} value={minorfieldvalue}>
-              <option>no pick</option>
+              <option>select</option>
              {options}
           </select>
          

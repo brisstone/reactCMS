@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { setUserSession } from './Utils/Common';
-import EditorConvertToText from './components/EditorConvertToText';
+// import EditorConvertToText from './components/EditorConvertToText';
 // import MyEditor from './components/Editor';
 
 function Login(props) {
@@ -33,7 +33,7 @@ function Login(props) {
     setLoading(true);
       // "proxy": "https://pythocmsapi.herokuapp.com/",
 
-    await axios.post("/login", { email: username.value, password: password.value }).then(response => {
+    await axios.post("https://pythocmsapi.herokuapp.com/login", { email: username.value, password: password.value }).then(response => {
       setLoading(false);
       console.log(response.data[0].IncorrectPassword)
       props.history.push('/teacher');
@@ -93,7 +93,7 @@ function Login(props) {
         <input type="password" {...password} autoComplete="new-password" />
       </div>
      
-      <EditorConvertToText editorValue={updateEditor}/>
+     
 
       {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}<br />
       <input type="button" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading} /><br />
