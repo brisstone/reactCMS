@@ -85,7 +85,7 @@ const Singer = ["Singer1", "Singer2", "Singer3"]
 // );
 
 const allCourses = ["Biology1", "Biology2", "Biology3", "Physics1", "Physics2", "Physics3", "Chemistry1", "Chemistry2", "Chemistry3", "Account1", 
-                  "Account3", "Account3", "Business1", "Business2", "Business3", "Credit1", "Credit2", "Credit3", "Law1", "Law2", "Law3", "Poet1", 
+                  "Account2", "Account3", "Business1", "Business2", "Business3", "Credit1", "Credit2", "Credit3", "Law1", "Law2", "Law3", "Poet1", 
                   "Poet2", "Poet3", "Singer1", "Singer2", "Singer3" ]
 
 
@@ -359,7 +359,10 @@ const handleExtraCourseOnClick = useCallback((e) => {
             setLoading(false);
             console.log(response)
             console.log(response.data)
-            var reply = response.data;
+            // var reply = response.data;
+            // var jsonData = JSON.parse(JSON.stringify(response));
+            // console.log(jsonData)
+            // console.log(typeof(jsonData.data))
             if(response.status===200){
               setMessage(response.data)
             }else{
@@ -371,7 +374,7 @@ const handleExtraCourseOnClick = useCallback((e) => {
           setLoading(false);
           console.log(error);
           if (error.status === 401) setMessage(error.response.data.message);
-          else setMessage("Something went wrong. Please try again later.");
+          else setMessage("DUPLICATE EMAIL");
           
         });
 
@@ -406,17 +409,17 @@ const handleExtraCourseOnClick = useCallback((e) => {
 
         <div className="input-container">
           <label className="parameter"> Fullname</label>
-        <input type="text" placeholder="full-name" onChange={handleFullnameOnChange}  />
+        <input type="text" placeholder="full-name" onChange={handleFullnameOnChange} required />
         </div>
         
         <div className="input-container">
           <label className="parameter" >Date of birth</label>
-          <input type="date" id="birthday" name="birthday" onChange={handleDateofbirthOnChange}/>
+          <input type="date" id="birthday" name="birthday" onChange={handleDateofbirthOnChange} required/>
         </div>
         
         <div className="input-container">
           <label className="parameter" >Image</label>
-          <input type="file" onChange = {fileSelectorHandler} />
+          <input type="file" onChange = {fileSelectorHandler} required/>
                 {isSelected ? (
                 <p>Image selected</p>
             ) : (
@@ -426,12 +429,12 @@ const handleExtraCourseOnClick = useCallback((e) => {
         
         <div className="input-container">
           <label className="parameter" >School Start Year</label>
-        <input type="date" placeholder="School Start" onChange={handleStartyearOnChange}/>
+        <input type="date" placeholder="School Start" onChange={handleStartyearOnChange} required/>
         </div>
         
         <div className="input-container">
           <label className="parameter">Major Field of Study</label>
-          <select onChange={majorFieldChangeHandler} value={majorfieldvalue} >
+          <select onChange={majorFieldChangeHandler} value={majorfieldvalue} required>
             {/* {console.log("fo", e)} */}
             <option value="Science" key="1">Science</option>
             <option value="Art" key="2">Art</option>
@@ -441,7 +444,7 @@ const handleExtraCourseOnClick = useCallback((e) => {
 
         <div className="input-container">
         <label className="parameter">Minor Field of Study</label>
-          <select onChange={handleMinorfieldOnChange} value={minorfieldvalue}>
+          <select onChange={handleMinorfieldOnChange} value={minorfieldvalue} required>
               <option>select</option>
              {options}
           </select>
@@ -455,7 +458,7 @@ const handleExtraCourseOnClick = useCallback((e) => {
                 type2? type2.map((el) => (
                   <div key={el}>
                     <label htmlFor={el} >{el}
-                      <input type="checkbox" name={el} value={el}   onChange={handleOnClick}  />
+                      <input type="checkbox" name={el} value={el}   onChange={handleOnClick}/>
                     </label>
                     
                   </div>
@@ -470,7 +473,7 @@ const handleExtraCourseOnClick = useCallback((e) => {
                       <label > Other Courses</label>
                     </div>
               {newallCourses? newallCourses.map(e =>(
-                <div>              
+                <div >              
                     <label htmlFor={e}>{e}</label>
                     <label> <input type="checkbox"  key = {e} value={e} onChange={handleExtraCourseOnClick}/></label>
                 </div>
@@ -483,7 +486,7 @@ const handleExtraCourseOnClick = useCallback((e) => {
         <div className="input-container">
             <label className="parameter" >Average Grade</label>
             <label>
-               <input type="text" value={avgGrade} placeholder="average grade" onChange={handleAvgOnChange} />
+               <input type="text" value={avgGrade} placeholder="average grade" onChange={handleAvgOnChange} required />
             </label>
           
         </div>
@@ -491,19 +494,19 @@ const handleExtraCourseOnClick = useCallback((e) => {
         <div className="input-container">
           <label className="parameter">Comment</label>
           <div >
-             <textarea className="areaText" value={comment} onChange={handleCommentChange} placeholder="teachers' comment" />
+             <textarea className="areaText" value={comment} onChange={handleCommentChange} required placeholder="teachers' comment" />
           </div>
        
         </div>
         
         <div className="input-container">
           <label className="parameter">Suspended</label>
-        <input type="checkbox" checked={suspended} onChange={handleSuspensionChange}/>
+        <input type="checkbox" checked={suspended} onChange={handleSuspensionChange} required/>
         </div>
 
         <div className="input-container">
 
-          <fieldset onChange={handleRadioOnChange}>
+          <fieldset onChange={handleRadioOnChange} required>
             <legend className="parameter">Degree</legend>
             {/* common name attribute */}
               <label className="degreechk"><input  name="degree" type="radio" value={BA}  />BA</label>
@@ -517,7 +520,7 @@ const handleExtraCourseOnClick = useCallback((e) => {
         
           <div >
             <label >Teacher's REmark</label>
-            <Editor 
+            <Editor required
             // editorState={editorState}
             onChange={onEditorStateChange}
            

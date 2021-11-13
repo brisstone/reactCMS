@@ -10,7 +10,7 @@ function Login(props) {
   const username = useFormInput('');
   const password = useFormInput('');
   const [error, setError] = useState(null);
-  const [editorValue, setEditorValue] = useState('')
+ 
   
 
   // http://localhost:4000/users/signin
@@ -22,12 +22,10 @@ function Login(props) {
     responseType: 'json'
   }
 
-  const updateEditor = (edit)=>{
-        setEditorValue(edit);
-  }
+  
 
-  console.log(editorValue);
-  console.log('rrrrrr')
+  
+
 
   const handleLogin = async () => {
     setError(null);
@@ -79,7 +77,7 @@ function Login(props) {
         else setError("Something went wrong. Please try again later.");
       
     });
-    console.log(setEditorValue)
+   
   }
 
   return (
