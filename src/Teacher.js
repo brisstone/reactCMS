@@ -562,7 +562,7 @@ const handleExtraCourseOnClick = useCallback((e) => {
         </div>
         
           <div >
-            <label >Teacher's Remark</label>
+            <label >Teacher's REmark</label>
             <Editor 
             // editorState={editorState}
             onChange={onEditorStateChange}
