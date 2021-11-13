@@ -52,14 +52,14 @@ code {
   grid-template-columns: 1fr 1fr;
 }
 
-.editorcomponent{
+/* .editorcomponent{
   height: 20rem;
   width: 25rem;
-}
+} */
 
-.input-container{
+/* .input-container{
   margin-bottom: 0.5rem;
-}
+} */
 
 .areaText{
   width: 25rem;
