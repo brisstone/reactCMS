@@ -79,3 +79,23 @@ input[type=textarea]{
 .degreechk{
   margin-right: 0.5rem;
 }
+
+.deleteBtn{
+  background-color: red;
+  color: white;
+  margin-left: 1rem;
+}
+
+.extraCourselist{
+  padding-top: 1rem;
+}
+.errorMsg{
+  text-align: center;
+}
+.failureMsg{
+  color: red;
+}
+
+.successMsg{
+  color: green;
+}

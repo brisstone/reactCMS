@@ -2,26 +2,19 @@ import React, {useState, useEffect, useCallback} from 'react';
 import ReactDOM from 'react-dom';
 import { getUser, removeUserSession } from './Utils/Common';
 import axios from 'axios';
-import {
-  EditorState, ContentState, RichUtils, 
-  getDefaultKeyBinding, KeyBindingUtil,
-  Entity, convertToRaw, CompositeDecorator
-} from 'draft-js'
-import { Editor } from "react-draft-wysiwyg";
+
+
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-// import {EditorState} from 'draft-js';
+
 import 'draft-js/dist/Draft.css';
 import '../node_modules/draft-js/dist/Draft.css'
-import '../src/components/richeditor.css'
-// import RichTextEditor from './components/RichTextEditor';
-import './index.css'
-// import e from 'cors';
-// import EditorJS from '@editorjs/editorjs';
-// import EditorConvertToText from './components/EditorConvertToText';
-// const editor = new EditorJS();
-import htmlToDraft from 'html-to-draftjs';
 
+import './index.css'
+import Base64 from 'crypto-js/enc-base64';
+var CryptoJS = require("crypto-js");
+var AES = require("crypto-js/aes");
+var SHA256 = require("crypto-js/sha256"); 
 
 
 
@@ -36,33 +29,29 @@ export default function Teacher(props) {
   const [email, setEmail] = useState('');
   const [fullname, setFullname] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState(null);
-  const [selectedFile, setSelectedFile] = useState({
-    myFile: "",
-  });
+  const [password, setPassword] = useState('')
+ 
   // determines if a file has been picked or not
   const [isSelected, setIsSelected] = useState(false);
   const [majorfieldvalue, setMajorfieldvalue] = useState('Science');
   const [minorfieldvalue, setMinorfieldvalue] = useState('');
   const [courseList, setCourseList] = useState([])
   const [extraCourseList, setExtraCourseList] = useState([])
-  const [avgGrade, setAvgGrade] = useState('')
-  const [suspended, setSuspended] = useState(false);
-  const [comment, setComment] = useState('');
+  const [errorType, setErrorType] = useState(true)
+  
+  
+  
   const [startYear, setStartYear] = useState(null);
-  const [editorState, setEditorState] = React.useState(
-    () => EditorState.createEmpty(),
-  );
-  const [editorValue, setEditorValue] = useState('')
-  const [BA, setBA] = useState("BA")
-  const [BSc, setBSc] = useState("BSc")
-  const [PHD, setPHD] = useState("PHD")
-  const [degree, setDegree] = useState('')
+ 
+  const [checkBox, setcheckBox] = useState(true)
+  
   
 
 
   var remove = false;
   const html = '<p id="para">asdfsd</p>';
   
+
   
 
   const Science = ["Biology", "Physics", "Chemistry"]
@@ -145,7 +134,7 @@ const allCourses = ["Biology1", "Biology2", "Biology3", "Physics1", "Physics2", 
 // })
 
  
-  console.log(type2)
+  // console.log(type2)
   console.log(newallCourses)
 
 
@@ -159,33 +148,7 @@ const allCourses = ["Biology1", "Biology2", "Biology3", "Physics1", "Physics2", 
     props.history.push('/login');
   }
 
-  const convertToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
-
-  const fileSelectorHandler = async(e) =>{
-    console.log(e.target.files[0])
-    const file = e.target.files[0];
-    const base64 = await convertToBase64(file);
-    setSelectedFile({ ...selectedFile, myFile: base64 });
-
-    console.log(selectedFile)
-    setIsSelected(true)
-
-
-
-    
-  }
-  console.log(selectedFile)
+ 
 
   function majorFieldChangeHandler(event){
     setMajorfieldvalue(event.target.value)
@@ -193,17 +156,26 @@ const allCourses = ["Biology1", "Biology2", "Biology3", "Physics1", "Physics2", 
     console.log(event.target)
   }
 
-  const handleSuspensionChange = () => {
-    setSuspended(!suspended);
-  };
+ 
 
-  const handleCommentChange = (e)=>{
-      setComment(e.target.value)
-  }
-
+ 
   const handleFullnameOnChange = (e)=>{
     var value = e.target.value
     setFullname(value) 
+  }
+
+  const handlePasswordOnChange = (e)=>{
+    var value = e.target.value
+    // Encrypt
+
+    // var ciphertext = Base64.stringify(CryptoJS.AES.encrypt(value, 'secret key 123').toString());
+    // const nonce = "jay"
+    // const hashDigest = SHA256(value);
+    // const hmacDigest = Base64.stringify(hmacSHA512(path + hashDigest, privateKey));
+
+
+    setPassword(value) 
+    console.log(password)
   }
 
   
@@ -224,8 +196,11 @@ const allCourses = ["Biology1", "Biology2", "Biology3", "Physics1", "Physics2", 
 
   const handleStartyearOnChange = (e)=>{
     var value = e.target.value
+
     
-    setStartYear(value)
+    
+    setStartYear(value.replace(/[^\d.]/ig, ""))
+
    
     // setCourseList(courseList => [...courseList,value] );
     
@@ -236,41 +211,13 @@ const allCourses = ["Biology1", "Biology2", "Biology3", "Physics1", "Physics2", 
     setMinorfieldvalue(value)
     // setCourseList(courseList => [...courseList,value] );
   }
-  const handleAvgOnChange = (e)=>{
-    var value = e.target.value
-    setAvgGrade(value)
-    // setCourseList(courseList => [...courseList,value] );
-    
-  }
-
-  const handleRadioOnChange = (e)=>{
-      var value = e.target.value;
-     setDegree(value);
-  }
-  console.log(degree)
-
-//Fetch editor props from child
- console.log("lllljspro", editorValue)
-
-  // const contentState = editorState.getCurrentContent();
 
 
-
-  const onEditorStateChange = useCallback((rawcontent)=>{
-    console.log(rawcontent)
-    setEditorState(rawcontent.blocks[0].text)
-    // console.log("jjjjjjjjjjjjjjjjjjjpppppp", convertToRaw(editorState.getCurrentContent()).blocks[0].text)
-    
-
-    
-  }, [editorState])
-
-  console.log(editorState)
-
-  // useEffect(() => {
  
-  
-  // }, [editorState])
+
+
+
+
 
   var newallCourses
   const allcoursesField = useCallback((e) => {
@@ -297,34 +244,61 @@ if(type2){
    
 const handleExtraCourseOnClick = useCallback((e) => {
   var value = e.target.value
-  console.log(e.target.checked)
+  console.log(e.target.value)
 
-  if (e.target.checked){
-    //append to array
+
     
     setExtraCourseList(extraCourseList => [...extraCourseList,value] );
    
-  } else if (!e.target.checked){
-    //remove from array
-   
-    setExtraCourseList(extraCourseList.filter((a) => a !== value));
- }
+ 
 }, [extraCourseList])
 
 
   console.log(extraCourseList)
 
+const handleDeleteExtracourse = (e)=>{
+  e.preventDefault()
+  var value = e.target.value
+  console.log(value)
+  setExtraCourseList(extraCourseList.filter((a) => a !== value));
+
+}
+
+// const handleAddExtracourse = (e)=>{
+//   e.preventDefault()
+//   var value = e.target.value
+//   console.log(value)
+//   setExtraCourseList(extraCourseList => [...extraCourseList,value] );
+
+// }
 
 
-  const handleOnClick = useCallback((e) => {
+
+  const handleOnClick = useCallback((e,type2) => {
     var value = e.target.value
-    let NewCourses
+    // setcheckBox(false);
+    // setCourseList(type2);
+    console.log(type2)
+    // type2.map(e=>{
+    //   setCourseList(e);
+    // })
+    console.log(e.currentTarget)
+    console.log(value)
+    console.log(courseList)
 
+    let NewCourses
+    // e.target.checked = "false"
     if (e.target.checked){
-      //append to array
-      setCourseList(courseList => [...courseList,value] );
+
+       //append to array
+       console.log("uppppp", e.target)
+       setCourseList(courseList => [...courseList,value] );
+
+      
+      
      
     } else if(!e.target.checked) {
+     
       //remove from array
 
       console.log("MEEE", e.target)
@@ -332,6 +306,7 @@ const handleExtraCourseOnClick = useCallback((e) => {
 
       NewCourses =  courseList.filter((a) => a !== value);
       setCourseList(NewCourses);
+      
 
     
    }
@@ -348,24 +323,32 @@ const handleExtraCourseOnClick = useCallback((e) => {
 
   const submitHandler = (e) =>{
       e.preventDefault();
-    
-      console.log(selectedFile)
-      console.log(selectedFile)
-   
 
-    console.log(editorValue);
+      console.log(startYear.length)
+     
+      if(startYear.length < 4){
+        setMessage("Start Year Length is less than 4")
+      }else{
 
-      axios.post('https://pythocmsapi.herokuapp.com/admregister', {Adm: "", email: email,  Picture: selectedFile, FullName: fullname, DateOfBirth: dateOfBirth, SchoolStartYear: startYear, MajorFieldOfStudy: majorfieldvalue, MinorFieldOfStudy: minorfieldvalue, Courses: courseList, AdCourses: extraCourseList, Average: avgGrade, Comments: comment,  Suspended: suspended, Degree: degree, Remark: editorState}).then(response => {
+  
+
+      axios.post('/admregister', {Adm: "", email: email, FullName: fullname,Password: password, DateOfBirth: dateOfBirth, SchoolStartYear: startYear, MajorFieldOfStudy: majorfieldvalue, MinorFieldOfStudy: minorfieldvalue, Courses: courseList, AdCourses: extraCourseList}).then(response => {
             setLoading(false);
             console.log(response)
-            console.log(response.data)
+            console.log(response.data[0].EmailAlreadyExist)
             // var reply = response.data;
             // var jsonData = JSON.parse(JSON.stringify(response));
             // console.log(jsonData)
             // console.log(typeof(jsonData.data))
-            if(response.status===200){
-              setMessage(response.data)
+            if(response.data[0].EmailAlreadyExist === "Email Already Exists"){
+              setErrorType(false)
+              setMessage("EMAIL ALREADY EXISTS")
+            }else if(response.data[0].SUCCESS === "SUCCESS"){
+              
+              setErrorType(true)
+              setMessage("SUCCESS")
             }else{
+              setErrorType(false);
               setMessage("ERROR IN STORING")
             }
             
@@ -374,9 +357,11 @@ const handleExtraCourseOnClick = useCallback((e) => {
           setLoading(false);
           console.log(error);
           if (error.status === 401) setMessage(error.response.data.message);
-          else setMessage("DUPLICATE EMAIL");
+          else setMessage("SOMETHING WENT WRONG");
           
         });
+
+      }
 
            
   }
@@ -386,21 +371,24 @@ const handleExtraCourseOnClick = useCallback((e) => {
       console.log(courseList)
     }, [majorfieldvalue])
 
+  console.log(errorType)
   return (
     <div>
       {/* {user.name}! */}
       Welcome Teacher: {user} <br /><br />
-      {Error}
+      
       {console.log(user)}
+
       <input type="button" onClick={handleLogout} value="Logout" />
 
-      <form className="form" onSubmit={submitHandler} >
-          <div>
-            {message? message: error }
-          </div>
-        <div>
+      <div className="errorMsg">
+      {errorType? <div  className="successMsg" ><h3>{message}</h3></div> : <div className="failureMsg"><h3>{message}</h3></div>}
+      </div>
+      <div>
           Register Students
         </div>
+      <form className="form" onSubmit={submitHandler} >
+        
 
         <div className="input-container">
           <label className="parameter"> Email</label>
@@ -411,25 +399,23 @@ const handleExtraCourseOnClick = useCallback((e) => {
           <label className="parameter"> Fullname</label>
         <input type="text" placeholder="full-name" onChange={handleFullnameOnChange} required />
         </div>
+
+        <div>
+        <label className="parameter">Password</label>
+        <input type="password" placeholder="password" onChange={handlePasswordOnChange} required />
+          
+        </div>
         
         <div className="input-container">
           <label className="parameter" >Date of birth</label>
           <input type="date" id="birthday" name="birthday" onChange={handleDateofbirthOnChange} required/>
         </div>
         
-        <div className="input-container">
-          <label className="parameter" >Image</label>
-          <input type="file" onChange = {fileSelectorHandler} required/>
-                {isSelected ? (
-                <p>Image selected</p>
-            ) : (
-              <p>Image not yet selected</p>
-            )}
-        </div>
+     
         
         <div className="input-container">
           <label className="parameter" >School Start Year</label>
-        <input type="date" placeholder="School Start" onChange={handleStartyearOnChange} required/>
+        <input maxLength="4" type="text" value={startYear} placeholder="School Start" onChange={handleStartyearOnChange} required/>
         </div>
         
         <div className="input-container">
@@ -458,7 +444,8 @@ const handleExtraCourseOnClick = useCallback((e) => {
                 type2? type2.map((el) => (
                   <div key={el}>
                     <label htmlFor={el} >{el}
-                      <input type="checkbox" name={el} value={el}   onChange={handleOnClick}/>
+                      
+                      <input type="checkbox"  id="inline" name={el} value={el}   onChange={handleOnClick}/>
                     </label>
                     
                   </div>
@@ -472,68 +459,33 @@ const handleExtraCourseOnClick = useCallback((e) => {
                     <div>
                       <label > Other Courses</label>
                     </div>
-              {newallCourses? newallCourses.map(e =>(
-                <div >              
-                    <label htmlFor={e}>{e}</label>
-                    <label> <input type="checkbox"  key = {e} value={e} onChange={handleExtraCourseOnClick}/></label>
-                </div>
+
+                    <select onChange={handleExtraCourseOnClick}>
+                      <option value="" key="">Select</option>
+
+                    {newallCourses? newallCourses.map(e =>(
+                    <option value={e} key={e}>{e}</option>                              
                 
-              )) : <label>&nbsp;</label>}
+                  )) : <div>&nbsp;</div>}
+                        
+              </select>
+              <div className="extraCourselist">
+              {extraCourseList.map(e=>(
+                <div>{e}
+                  <button className="deleteBtn" value={e} onClick={handleDeleteExtracourse}>Remove</button>
+                  {/* <button value={e} onClick={handleAddExtracourse}>Add</button> */}
+                </div>
+              ))}
+              </div>
+            
             </div>
         
         </div> 
-        
-        <div className="input-container">
-            <label className="parameter" >Average Grade</label>
-            <label>
-               <input type="text" value={avgGrade} placeholder="average grade" onChange={handleAvgOnChange} required />
-            </label>
-          
-        </div>
-        
-        <div className="input-container">
-          <label className="parameter">Comment</label>
-          <div >
-             <textarea className="areaText" value={comment} onChange={handleCommentChange} required placeholder="teachers' comment" />
-          </div>
-       
-        </div>
-        
-        <div className="input-container">
-          <label className="parameter">Suspended</label>
-        <input type="checkbox" checked={suspended} onChange={handleSuspensionChange} required/>
-        </div>
-
-        <div className="input-container">
-
-          <fieldset onChange={handleRadioOnChange} required>
-            <legend className="parameter">Degree</legend>
-            {/* common name attribute */}
-              <label className="degreechk"><input  name="degree" type="radio" value={BA}  />BA</label>
-              <label className="degreechk"><input   name="degree" type="radio" value={BSc}  />BSc</label>
-              <label className="degreechk" ><input name="degree" type="radio" value={PHD} />PHD</label>
-          </fieldset>
-          
-          
-
-        </div>
-        
-          <div >
-            <label >Teacher's REmark</label>
-            <Editor required
-            // editorState={editorState}
-            onChange={onEditorStateChange}
-           
-           />
-           
-          </div>
-         
-
 
           <button className="primary" type="submit">
             Register
           </button>
-          {message}
+        
 
 
 
